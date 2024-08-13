@@ -152,8 +152,6 @@ contains
       allocate( ice_ocean_boundary%mass_berg  (is:ie,js:je) ) ;     ice_ocean_boundary%mass_berg = 0.0
     endif
     if (Wav%waves_is_init) then
-      allocate( ice_ocean_boundary%ustk0(is:ie,js:je) ) ; ice_ocean_boundary%ustk0(:,:) = 0.0
-      allocate( ice_ocean_boundary%vstk0(is:ie,js:je) ) ; ice_ocean_boundary%vstk0(:,:) = 0.0
       allocate( ice_ocean_boundary%ustkb(is:ie,js:je,wav%num_stk_bands) ) ; ice_ocean_boundary%ustkb(:,:,:) = 0.0
       allocate( ice_ocean_boundary%vstkb(is:ie,js:je,Wav%num_stk_bands) ) ; ice_ocean_boundary%vstkb(:,:,:) = 0.0
       allocate( ice_ocean_boundary%stk_wavenumbers(Wav%num_stk_bands))
@@ -324,12 +322,6 @@ contains
 
     if(ASSOCIATED(Ice_Ocean_Boundary%q_flux) ) call flux_ice_to_ocean_redistribute( Ice, Ocean, &
          Ice%flux_q, Ice_Ocean_Boundary%q_flux, Ice_Ocean_Boundary%xtype, do_area_weighted_flux )
-
-    if(ASSOCIATED(ice_wave_boundary%icegrd_ustk0_mpp) ) call flux_ice_to_ocean_redistribute( Ice, Ocean, &
-         ice_wave_boundary%icegrd_ustk0_mpp(:,:,1), Ice_Ocean_Boundary%ustk0(:,:), Ice_Ocean_Boundary%xtype, do_area_weighted_flux )
-
-    if(ASSOCIATED(ice_wave_boundary%icegrd_vstk0_mpp) ) call flux_ice_to_ocean_redistribute( Ice, Ocean, &
-         ice_wave_boundary%icegrd_vstk0_mpp(:,:,1), Ice_Ocean_Boundary%vstk0(:,:), Ice_Ocean_Boundary%xtype, do_area_weighted_flux )
 
     if(ASSOCIATED(ice_wave_boundary%icegrd_ustkb_mpp) ) then
       do istk = 1, ice_ocean_boundary%num_stk_bands

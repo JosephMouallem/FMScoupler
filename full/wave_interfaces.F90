@@ -96,11 +96,6 @@ contains
     allocate( ice_wave_boundary%wavgrd_vcurr_mpp(is:ie,js:je,1) )
     ice_wave_boundary%wavgrd_vcurr_mpp(:,:,:) = 0.0
 
-    allocate( wav%ustk0_mpp(is:ie,js:je) )
-    wav%ustk0_mpp(:,:) = 0.0
-    allocate( wav%vstk0_mpp(is:ie,js:je) )
-    wav%vstk0_mpp(:,:) = 0.0
-
     allocate( wav%ustkb_mpp(is:ie,js:je,wav%num_stk_bands) )
     wav%ustkb_mpp(:,:,:) = 0.0
     allocate( wav%vstkb_mpp(is:ie,js:je,wav%num_stk_bands) )
@@ -113,10 +108,6 @@ contains
     wav%glob_loc_Y(:,:) = 0
 
     call fms_mpp_domains_get_compute_domain( Ice%domain, is, ie, js, je )
-    allocate( ice_wave_boundary%icegrd_ustk0_mpp(is:ie,js:je,1) )
-    ice_wave_boundary%icegrd_ustk0_mpp(:,:,:) = 0.0
-    allocate( ice_wave_boundary%icegrd_vstk0_mpp(is:ie,js:je,1) )
-    ice_wave_boundary%icegrd_vstk0_mpp(:,:,:) = 0.0
     allocate( ice_wave_boundary%icegrd_ustkb_mpp(is:ie,js:je,1,wav%num_stk_bands) )
     ice_wave_boundary%icegrd_ustkb_mpp(:,:,:,:) = 0.0
     allocate( ice_wave_boundary%icegrd_vstkb_mpp(is:ie,js:je,1,wav%num_stk_bands) )
@@ -178,12 +169,6 @@ contains
     endif
 
       ! -> Put Wave parameters onto exchange grid
-    call fms_xgrid_put_to_xgrid (Wav%ustk0_mpp(:,:) , 'WAV', ex_ustokes , xmap_ice_wav)
-    call fms_xgrid_put_to_xgrid (Wav%vstk0_mpp(:,:) , 'WAV', ex_vstokes , xmap_ice_wav)
-    if (Ice%pe) then
-      call fms_xgrid_get_from_xgrid(Ice_Wave_Boundary%icegrd_ustk0_mpp(:,:,:), 'OCN', ex_ustokes, xmap_ice_wav)
-      call fms_xgrid_get_from_xgrid(Ice_Wave_Boundary%icegrd_vstk0_mpp(:,:,:), 'OCN', ex_vstokes, xmap_ice_wav)
-    endif
     do i_stk = 1,wav%num_Stk_bands
       call fms_xgrid_put_to_xgrid (Wav%ustkb_mpp(:,:,i_stk) , 'WAV', ex_ustokes , xmap_ice_wav)
       call fms_xgrid_put_to_xgrid (Wav%vstkb_mpp(:,:,i_stk) , 'WAV', ex_vstokes , xmap_ice_wav)
