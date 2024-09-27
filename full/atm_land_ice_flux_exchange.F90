@@ -59,7 +59,6 @@ module atm_land_ice_flux_exchange_mod
 #endif
 #endif
 
-
 #ifdef SCM
   ! option to override various surface boundary conditions for SCM
   use scm_forc_mod,            only: do_specified_flux, scm_surface_flux,             &
